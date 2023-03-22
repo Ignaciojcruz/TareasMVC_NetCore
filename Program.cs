@@ -19,7 +19,11 @@ builder.Services.AddControllersWithViews(opt =>
 
 builder.Services.AddDbContext<ApplicationDbContext>(opciones => opciones.UseSqlServer("name=DefaultConnection"));
 
-builder.Services.AddAuthentication();
+builder.Services.AddAuthentication().AddMicrosoftAccount(opt =>
+{
+    opt.ClientId = builder.Configuration["MicrosoftClientId"];
+    opt.ClientSecret = builder.Configuration["MicrosfotSecretId"];
+});
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(opt =>
 {
