@@ -8,6 +8,7 @@ using System.Globalization;
 using TareasMVC_NetCore;
 using Microsoft.AspNetCore.Mvc.Razor;
 using TareasMVC_NetCore.Servicios;
+using TareasMVC_NetCore.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -52,6 +53,8 @@ builder.Services.AddLocalization( opt =>
 {
     opt.ResourcesPath = "Resources";
 });
+
+builder.Services.AddTransient<IServicioUsuarios, ServicioUsuarios>();
 
 var app = builder.Build();
 
