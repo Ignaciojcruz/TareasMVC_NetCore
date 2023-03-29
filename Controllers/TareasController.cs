@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using TareasMVC_NetCore.Entidades;
 using TareasMVC_NetCore.Interfaces;
+using TareasMVC_NetCore.Models;
 
 namespace TareasMVC_NetCore.Controllers
 {
@@ -18,9 +19,18 @@ namespace TareasMVC_NetCore.Controllers
         }
 
         [HttpGet]
-        public async Task<List<Tarea>> Get()
+        public async Task<List<TareaDTO>> Get()
         {
-            return await _context.Tareas.ToListAsync();
+            var usuarioId = _servicioUsuarios.ObtenerUsuarioId();
+            return await _context.Tareas.Where(t => t.UsuarioCreacionId == usuarioId)
+                                            .OrderBy(t => t.Orden)
+                                            .Select(t => new TareaDTO()
+                                            {
+                                                Id = t.Id,
+                                                Titulo = t.Titulo
+                                            })
+                                            .ToListAsync();
+            
         }
 
         [HttpPost]
