@@ -25,13 +25,14 @@ namespace TareasMVC_NetCore.Controllers
         }
 
         [HttpGet]
-        public async Task<List<TareaDTO>> Get()
+        public async Task<ActionResult<List<TareaDTO>>> Get()
         {
-            var usuarioId = _servicioUsuarios.ObtenerUsuarioId();
-            return await _context.Tareas.Where(t => t.UsuarioCreacionId == usuarioId)
-                                            .OrderBy(t => t.Orden)
-                                            .ProjectTo<TareaDTO>(_mapper.ConfigurationProvider)
-                                            .ToListAsync();
+            return BadRequest("No puedes hacer esto");
+            //var usuarioId = _servicioUsuarios.ObtenerUsuarioId();
+            //return await _context.Tareas.Where(t => t.UsuarioCreacionId == usuarioId)
+            //                                .OrderBy(t => t.Orden)
+            //                                .ProjectTo<TareaDTO>(_mapper.ConfigurationProvider)
+            //                                .ToListAsync();
             
         }
 
