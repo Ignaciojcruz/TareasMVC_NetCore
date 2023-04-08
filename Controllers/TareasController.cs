@@ -96,6 +96,20 @@ namespace TareasMVC_NetCore.Controllers
             return Ok();
         }
 
+        [HttpDelete("{id:int}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            var usuarioId = _servicioUsuarios.ObtenerUsuarioId();
+
+            var tarea = await _context.Tareas.FirstOrDefaultAsync(t => t.Id == id && t.UsuarioCreacionId == usuarioId);
+
+            if(tarea is null) return NotFound();
+
+            _context.Remove(tarea);
+            await _context.SaveChangesAsync();
+            return Ok();
+        }
+
 
         [HttpPost("ordenar")]
         public async Task<IActionResult> Ordenar([FromBody] int[] ids)
