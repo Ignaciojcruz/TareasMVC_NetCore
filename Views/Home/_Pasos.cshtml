@@ -13,7 +13,13 @@
                 <span data-bind="text: descripcion, hidden: modoEdicion"></span>
                 <textarea name="txtPasoDescripcion" class="form-control" placeholder="Agregue una descripción"
                             data-bind="{value: descripcion, visible: modoEdicion}"></textarea>
+
+                <div class="mt-2" data-bind="{value: descripcion, visible: modoEdicion}">
+                    <button class="btn btn-primary" data-bind="{click: manejarClickGuardarPaso}">Guardar</button>
+                    <button class="btn btn-secondary" data-bind="{click: manejarClickCancelarPaso}">Cancelar</button>
+                </div>
             </div>
+            
         </div>
     </div>
 </div>

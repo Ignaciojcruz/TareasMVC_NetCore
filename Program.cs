@@ -9,6 +9,7 @@ using TareasMVC_NetCore;
 using Microsoft.AspNetCore.Mvc.Razor;
 using TareasMVC_NetCore.Servicios;
 using TareasMVC_NetCore.Interfaces;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,12 +22,15 @@ builder.Services.AddControllersWithViews(opt =>
 {
     opt.Filters.Add(new AuthorizeFilter(politicaUsuariosAutenticados));
 })
-    .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
-    .AddDataAnnotationsLocalization(opt =>
+.AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
+.AddDataAnnotationsLocalization(opt =>
     {
         opt.DataAnnotationLocalizerProvider = (_, factoria) =>
             factoria.Create(typeof(RecursoCompartido));
-    });
+ }).AddJsonOptions(opt =>
+ {
+     opt.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+ });
 
 builder.Services.AddDbContext<ApplicationDbContext>(opciones => opciones.UseSqlServer("name=DefaultConnection"));
 
