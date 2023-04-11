@@ -12,7 +12,8 @@ function manejarClickCancelarPaso(paso) {
     if (paso.esNuevo()) {
         tareaEditarVM.pasos.pop();
     } else {
-
+        paso.modoEdicion(false);
+        paso.descripcion(paso.descripcionAnterior);
     }
 }
 
@@ -22,10 +23,21 @@ async function manejarClickGuardarPaso(paso) {
     const idTarea = tareaEditarVM.id;
     const data = obtenerCuerpoPeticionPaso(paso);
 
+    const descripcion = paso.descripcion();
+
+    if (!descripcion) {
+        paso.descripcion(paso.descripcionAnterior);
+
+        if (esNuevo) {
+            tareaEditarVM.pasos.pop();
+        }
+        return;
+    }
+
     if (esNuevo) {
         await insertarPaso(paso, data, idTarea);
     } else {
-
+        actualizarPaso(data, paso.id());
     }
 }
 
@@ -51,4 +63,36 @@ function obtenerCuerpoPeticionPaso(paso) {
         descripcion: paso.descripcion(),
         realizado: paso.realizado()
     });
+}
+
+function manejarClickDescripcionPaso(paso) {
+    paso.modoEdicion(true);
+    paso.descripcionAnterior = paso.descripcion();
+    $("[name=txtPasoDescripcion]:visible").focus();
+}
+
+function manejarClickCheckBoxPaso(paso) {
+
+    if (paso.esNuevo()) {
+        return true;
+    }
+
+    const data = obtenerCuerpoPeticionPaso(paso);
+    actualizarPaso(data, paso.id());
+
+    return true;
+}
+
+async function actualizarPaso(data, id) {
+    const respuesta = await fetch(`${urlPasos}/${id}`, {
+        body: data,
+        method: "PUT",
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+
+    if (!respuesta.ok) {
+        manejarErrorApi(respuesta);
+    }
 }

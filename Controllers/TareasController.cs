@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TareasMVC_NetCore.Entidades;
 using TareasMVC_NetCore.Interfaces;
+using TareasMVC_NetCore.Migrations;
 using TareasMVC_NetCore.Models;
 
 namespace TareasMVC_NetCore.Controllers
@@ -41,7 +42,8 @@ namespace TareasMVC_NetCore.Controllers
         {
             var usuarioId = _servicioUsuarios.ObtenerUsuarioId();
 
-            var tarea = await _context.Tareas.FirstOrDefaultAsync(t => t.Id == id && t.UsuarioCreacionId == usuarioId);
+            var tarea = await _context.Tareas.Include(t => t.Pasos)
+                                .FirstOrDefaultAsync(t => t.Id == id && t.UsuarioCreacionId == usuarioId);
 
             if(tarea is null) return NotFound();
 
