@@ -70,5 +70,22 @@ namespace TareasMVC_NetCore.Controllers
             return Ok();
         }
 
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> Delete(Guid id)
+        {
+            var usuarioId = _servicioUsuarios.ObtenerUsuarioId();
+
+            var paso = await _context.Pasos.Include(p => p.Tarea).FirstOrDefaultAsync(p => p.Id == id);
+
+            if (paso is null) return NotFound();
+
+            if (paso.Tarea.UsuarioCreacionId != usuarioId) return Forbid();
+
+            _context.Remove(paso);
+            await _context.SaveChangesAsync();
+
+            return Ok();
+        }
+
     }
 }
