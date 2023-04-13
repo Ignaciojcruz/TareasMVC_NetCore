@@ -186,6 +186,11 @@ function obtenerIndiceTareaEdicion() {
     return tareaListadoViewModel.tareas().findIndex(t => t.id() == tareaEditarVM.id);
 }
 
+function obtenerTareaEnEdicion() {
+    const indice = obtenerIndiceTareaEdicion();
+    return tareaListadoViewModel.tareas()[indice];
+}
+
 $(function () {
     $("#reordenable").sortable({
         axis: 'y',
