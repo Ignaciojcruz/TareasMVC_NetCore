@@ -42,7 +42,7 @@ namespace TareasMVC_NetCore.Controllers
         {
             var usuarioId = _servicioUsuarios.ObtenerUsuarioId();
 
-            var tarea = await _context.Tareas.Include(t => t.Pasos)
+            var tarea = await _context.Tareas.Include(t => t.Pasos.OrderBy(p => p.Orden))
                                 .FirstOrDefaultAsync(t => t.Id == id && t.UsuarioCreacionId == usuarioId);
 
             if(tarea is null) return NotFound();
