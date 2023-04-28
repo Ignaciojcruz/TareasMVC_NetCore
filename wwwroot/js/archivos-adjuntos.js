@@ -25,8 +25,24 @@ async function manejarSeleccionArchivoTarea(event) {
     }
 
     const json = await respuesta.json();
-    console.log(json);
+
+    prepararArchivosAdjuntos(json);
 
     inputArchivoTarea.value = null;
 
+}
+
+function prepararArchivosAdjuntos(archivosAdjuntos) {
+    archivosAdjuntos.forEach(archivoAdjunto => {
+        let fechaCreacion = archivoAdjunto.fechaCreacion;
+        if (archivoAdjunto.fechaCreacion.indexOf('Z') === -1) {
+            fechaCreacion += 'Z';
+        }
+
+        const fechaCreationDT = new Date(fechaCreacion);
+        archivoAdjunto.publicado = fechaCreationDT.toLocaleString();
+
+        tareaEditarVM.archivosAdjuntos.push(
+            new archivoAdjuntoViewModel({ ...archivoAdjunto, modoEdicion: false }));
+    });
 }
