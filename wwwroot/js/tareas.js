@@ -45,6 +45,7 @@ async function obtenerTareas() {
 
     const json = await respuesta.json();
     tareaListadoViewModel.tareas([]);
+    
 
     json.forEach(valor => {
         tareaListadoViewModel.tareas.push(new tareaElementoListadoViewModel(valor));
@@ -107,6 +108,7 @@ async function manejarClickTarea(tarea) {
     tareaEditarVM.descripcion(json.descripcion);
 
     tareaEditarVM.pasos([]);
+    tareaEditarVM.archivosAdjuntos([]);
 
     json.pasos.forEach(paso => {
         tareaEditarVM.pasos.push(
